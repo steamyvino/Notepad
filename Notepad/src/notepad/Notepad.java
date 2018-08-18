@@ -27,11 +27,13 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.event.UndoableEditEvent;
 import javax.swing.event.UndoableEditListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.Document;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
+import javax.swing.undo.UndoableEdit;
 
 /**
  *
@@ -81,6 +83,15 @@ public class Notepad {
    private  File config = new File("config.txt");
    private String defaultFontName;
    private int defaultFontSize;
+   private File currentFile;
+   private boolean fileExist=false;
+   
+   private JFileChooser fileChooser = new JFileChooser();
+   
+   
+   
+   private Color defaultBgColor;
+   private Color defaultFontColor;
    
    /**
     * Find and Replace Frame
@@ -98,25 +109,38 @@ public class Notepad {
   
     Notepad()
     {
-    
+        
         checkConfig();
+        getConfig();
         initComponents();
         initMenuBar();
         initTextArea();
         initToolbar();
-        lab();
+        initRightClickMenu();
         initAboutFrame();
-        
+       
+    }
+    
+    Notepad(boolean init)
+    {
+
     }
     
     
     
+    public Font getActualFont()
+    {
+        return textArea.getFont();
+    }
+    
     void initComponents()
     {
 
+        
+       
         mainNotepadFrame.setBounds(300,300,800,600);
         mainNotepadFrame.setDefaultCloseOperation(3);
-       
+        mainNotepadFrame.setTitle("Untitled - Notepad");
        
         aboutFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         aboutFrame.setResizable(false);
@@ -124,6 +148,28 @@ public class Notepad {
         searchFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         searchFrame.setResizable(false);
        
+        mainNotepadFrame.addWindowListener(new WindowAdapter() {
+        
+            
+        public void windowClosing(WindowEvent we) 
+        {     
+            saveConfig();
+            closingNotepad();
+            
+        }
+        
+        
+        });
+        
+        
+        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("Text Documents", "txt", "text");
+        fileChooser.setFileFilter(filter);
+        fileChooser.addChoosableFileFilter(filter);
+
+      
+       
+        
         
 
         
@@ -141,6 +187,19 @@ public class Notepad {
                configWriter.write("Arial");
                configWriter.newLine();
                configWriter.write("14");
+               configWriter.newLine();
+               configWriter.write("255");
+               configWriter.newLine();
+               configWriter.write("255");
+               configWriter.newLine();
+               configWriter.write("255");
+               configWriter.newLine();
+               configWriter.write("0");
+               configWriter.newLine();
+               configWriter.write("0");
+               configWriter.newLine();
+               configWriter.write("0");
+               configWriter.newLine();
                configWriter.close();    
            }
           
@@ -161,7 +220,8 @@ public class Notepad {
            
            defaultFontName = configReader.readLine();
            defaultFontSize = Integer.parseInt(configReader.readLine());
-           
+           defaultBgColor = new Color(Integer.parseInt(configReader.readLine()),Integer.parseInt(configReader.readLine()),Integer.parseInt(configReader.readLine()));
+           defaultFontColor = new Color(Integer.parseInt(configReader.readLine()),Integer.parseInt(configReader.readLine()),Integer.parseInt(configReader.readLine()));
        } catch (FileNotFoundException ex) {
            System.out.println(ex.getMessage());
        }catch (IOException ex) {
@@ -172,15 +232,27 @@ public class Notepad {
     
     void saveConfig()
     {
-    
+      
+        System.out.println("TEST");
               
        try {
            BufferedWriter configWriter = new BufferedWriter(new FileWriter(config));
            configWriter.write(fontNameList.getSelectedItem().toString());
            configWriter.newLine();   
            configWriter.write(fontSizeList.getSelectedItem().toString());
+           configWriter.newLine();  
+           configWriter.write(Integer.toString(textArea.getBackground().getRed()));
+           configWriter.newLine();
+           configWriter.write(Integer.toString(textArea.getBackground().getGreen()));
+           configWriter.newLine();
+           configWriter.write(Integer.toString(textArea.getBackground().getBlue()));
+           configWriter.newLine();
+           configWriter.write(Integer.toString(textArea.getForeground().getRed()));
+           configWriter.newLine();
+           configWriter.write(Integer.toString(textArea.getForeground().getGreen()));
+           configWriter.newLine();
+           configWriter.write(Integer.toString(textArea.getForeground().getBlue()));
            configWriter.close();
-          
        } catch (IOException ex) {
            Logger.getLogger(Notepad.class.getName()).log(Level.SEVERE, null, ex);
      
@@ -189,15 +261,53 @@ public class Notepad {
     
     }
     
+    
+    void saveAsFile()
+    {
+           int confirm=0;
+           int result = fileChooser.showSaveDialog(mainNotepadFrame);
+           System.out.println(fileChooser.getSelectedFile());
+           currentFile = fileChooser.getSelectedFile();
+           
+           
+           if(currentFile.exists()) 
+           {  
+               if(result==0)
+               {
+                confirm = JOptionPane.showConfirmDialog(fileChooser,"File "+currentFile.getName()+" already exist. Do you want to overwrite it?","Confirm Save As", 0);
+                if(confirm==1);
+                    saveFile();
+                    fileExist=true;
+               }
+           }  
+           else
+           {
+               try 
+               {
+                    System.out.println(fileChooser.getFileFilter());
+                    currentFile.createNewFile();
+                    saveFile();
+                    fileExist=true;
+               } 
+               catch (IOException ex)
+               {
+                    System.out.println(ex.getMessage());
+               }
+           }
+           
+           mainNotepadFrame.setTitle(currentFile.getName()+" Notepad");
+    }
+    
     /**
      * test save file method
      */
-    void safeFile()
+    void saveFile()
     {
        try {
            
-           BufferedWriter textWriter = new BufferedWriter(new FileWriter("text.txt"));
-           textWriter.write(textArea.getText());
+           BufferedWriter textWriter = new BufferedWriter(new FileWriter(currentFile));
+           textArea.write(textWriter);
+          // textWriter.write(textArea.getText());
            textWriter.close();
        } catch (IOException ex) {
            Logger.getLogger(Notepad.class.getName()).log(Level.SEVERE, null, ex);
@@ -205,6 +315,9 @@ public class Notepad {
     
     
     }
+    
+    
+    
     
     void initSearchFrame()
     {
@@ -303,6 +416,27 @@ public class Notepad {
     
     }
     
+    
+    
+    void openFile(File file)
+    {
+        currentFile=file;
+        fileExist=true;
+        mainNotepadFrame.setTitle(currentFile.getName()+" Notepad");
+       
+       
+       try {
+           BufferedReader readw = new BufferedReader(new FileReader(file));
+           textArea.read(readw, null);
+      
+       } catch (FileNotFoundException ex) {
+           System.out.println(ex.getMessage());
+       } catch (IOException ex) {
+           System.out.println(ex.getMessage());
+       
+       }
+    }
+    
     void initMenuBar()
     {
      
@@ -318,17 +452,25 @@ public class Notepad {
         JMenu menuFile = menuBar.add(new JMenu(" File "));
         JMenuItem menuItemNew = menuFile.add("New");
         JMenuItem menuItemOpen = menuFile.add("Open");
+        menuItemOpen.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+              fileChooser.showOpenDialog(mainNotepadFrame);
+              openFile(fileChooser.getSelectedFile());
+              
+            }
+        });
         
         menuFile.add(actionSave);
         JMenuItem menuItemSaveAs = menuFile.add("SaveAs");
-        menuFile.addSeparator();
-        JMenuItem menuItemSaveConfig = menuFile.add("Save Config");
-        menuItemSaveConfig.addActionListener(new ActionListener() {
+        menuItemSaveAs.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-            saveConfig();
+            public void actionPerformed(ActionEvent ae) {
+             saveAsFile();
             }
         });
+        menuFile.addSeparator();
+      
         JMenuItem menuItemExit = menuFile.add("Exit");
         
         
@@ -361,12 +503,30 @@ public class Notepad {
         }
     });
         menuEdit.add(selectAll);
-   
+        
+
+        Settings settings = new Settings();
+        settings.addWindowListener(new WindowAdapter() {
+            public void windowClosed(WindowEvent we) 
+        {     
+            textArea.setBackground(settings.colorBackground);
+            textArea.setForeground(settings.colorFont);
+            
+        }
+});
+        
         
         JMenu menuTools = menuBar.add(new JMenu(" Tools "));
-        JMenu subMenuTheme = new JMenu("Theme");
-        menuTools.add(subMenuTheme);
+     
         JMenuItem menItemSettings = menuTools.add("Settings");
+        menItemSettings.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+              settings.setVisible(true);
+              settings.preview.setFont(textArea.getFont());
+               
+            }
+        });
         
         JMenu menuHelp = menuBar.add(new JMenu(" Help "));
         JMenuItem menuItemAbout = menuHelp.add("About");
@@ -392,7 +552,9 @@ public class Notepad {
         menuItemExit.addActionListener(new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent ae) {
-           closingNotepad();
+           System.out.println("exiting");
+            closingNotepad();
+           
         }
     });
         
@@ -411,15 +573,16 @@ public class Notepad {
               int saveChoice = JOptionPane.showConfirmDialog(mainNotepadFrame,new String("Do you want to save changes?"));
                 if(saveChoice==0)
                 {
-                    System.out.println("saving");
-                    isUnsaved=true;
-                    System.exit(0);
+                   checkIfFileExist();
+                   System.exit(0);
                 }
                 else if(saveChoice==1)
                     System.exit(0);
            }
     
     }
+    
+  
     
     void initToolbar()
     {
@@ -533,11 +696,13 @@ public class Notepad {
         
         doc.addUndoableEditListener(new MyUndoableEditListener());
         
-       
+      
                 
         Font defaultFont = new Font("Calibri",Font.PLAIN,14);
         
         textArea.setFont(defaultFont);
+        textArea.setBackground(defaultBgColor);
+        textArea.setForeground(defaultFontColor);
 
         mainNotepadFrame.getContentPane().add(textPane,BorderLayout.CENTER);
       
@@ -600,6 +765,7 @@ public class Notepad {
       
     }
     
+     
     
         private class ActionSave extends AbstractAction
         {
@@ -616,15 +782,32 @@ public class Notepad {
             @Override
             public void actionPerformed(ActionEvent ae)
             {
-                safeFile();
-                this.setEnabled(isUnsaved=false);
-                System.out.println("Saving");
-                System.out.println(isUnsaved);
+              
+               checkIfFileExist();
                   
             }
             
            
         }      
+        
+        void checkIfFileExist()
+        {
+             if(!fileExist)
+                {
+                   actionSave.setEnabled(isUnsaved=false);
+                   saveAsFile(); 
+                   
+                   
+                }
+                else
+                {
+                    saveFile();
+                    actionSave.setEnabled(isUnsaved=false);
+                    System.out.println("Saving");
+                    System.out.println(isUnsaved);
+                }
+        
+        }
         
          class UndoAction extends AbstractAction
         {
@@ -644,6 +827,7 @@ public class Notepad {
 
                try 
                 {
+                    
                     undo.undo();
                 } catch (CannotUndoException ex) {
                     System.out.println("Unable to undo: " + ex);
@@ -850,19 +1034,10 @@ public class Notepad {
         
         }
 
-        
-        
-        /**
-         * Do usunieca - UDEMY
-         */
   
-        void lab()
+        void initRightClickMenu()
         {
-        
-            
-            /**
-             * POPUP MENU
-             */
+
             JPopupMenu rightClickMenu = new JPopupMenu();
             rightClickMenu.add(undoAction);
             rightClickMenu.add(redoAction);
@@ -877,7 +1052,6 @@ public class Notepad {
                 @Override
                 public void mouseClicked(MouseEvent me) {
                     if(me.isPopupTrigger())
-                        System.out.println("Prawy");
                         rightClickMenu.show(textArea, me.getX(),me.getY());
                     if(me.getButton()==MouseEvent.BUTTON1)
                         rightClickMenu.setVisible(false);
@@ -885,7 +1059,7 @@ public class Notepad {
             
             });      
             
-            
+          
        
             
             
