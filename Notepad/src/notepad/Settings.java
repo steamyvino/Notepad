@@ -246,10 +246,19 @@ public class Settings extends JFrame {
         applyBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
+              isApplied=true;
               colorBackground=tempBgColor;
               colorFont=tempFontColor;
               dispose(); 
               
+            }
+        });
+        
+        cancelBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+               isApplied=false;
+               dispose();
             }
         });
         
