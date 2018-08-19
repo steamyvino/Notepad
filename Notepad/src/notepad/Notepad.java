@@ -21,6 +21,8 @@ import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 import javax.swing.undo.UndoManager;
 import javax.swing.undo.UndoableEdit;
+import java.awt.Desktop;
+import java.net.URI;
 
 /**
  *
@@ -599,7 +601,24 @@ public class Notepad {
     });
         
         JMenuItem menuItemGitHub = menuHelp.add("GitHub");
+        menuItemGitHub.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent ae) {
+          try 
+        {
+           
+            Desktop d=Desktop.getDesktop();
+
+           
+            d.browse(new URI("https://github.com/steamyvino/Notepad")); 
         
+        }
+        catch(Exception ex) 
+        {
+            ex.printStackTrace();
+        }
+            }
+        });
         
         
         /**
