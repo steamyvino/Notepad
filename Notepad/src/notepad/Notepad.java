@@ -44,7 +44,7 @@ public class Notepad {
    private JToolBar editPanel = new JToolBar();
    
 
-   public JTextArea textArea =new JTextArea("");
+   protected JTextArea textArea =new JTextArea("test");
    private JScrollPane textPane = new JScrollPane(textArea);
    
    private JPanel statusBar = new JPanel();
@@ -85,20 +85,27 @@ public class Notepad {
    /**
     * Find and Replace Frame
     */
-        JButton cancelSearchBtn = new JButton("Cancel");
-        JLabel replaceLabel = new JLabel("Replace with: ");
-        JButton replaceSearchBtn = new JButton("Replace");
-        JTextField replaceField = new JTextField(10);
-        JButton replaceAllBtn = new JButton("Replace All");
-        JButton searchBtn = new JButton("Find");
-        JLabel searchLabel= new JLabel("Find: ");
-        JTextField findField=new JTextField(10);
+//        JButton cancelSearchBtn = new JButton("Cancel");
+//        JLabel replaceLabel = new JLabel("Replace with: ");
+//        JButton replaceSearchBtn = new JButton("Replace");
+//        JTextField replaceField = new JTextField(10);
+//        JButton replaceAllBtn = new JButton("Replace All");
+//        JButton searchBtn = new JButton("Find");
+//        JLabel searchLabel= new JLabel("Find: ");
+//        JTextField findField=new JTextField(10);
         
         JTextField findFieldToolbar = new JTextField(10);
   
     Notepad()
     {
         
+        
+       
+    }
+    
+    void start()
+    {
+    
         checkConfig();
         getConfig();
         initComponents();
@@ -107,7 +114,7 @@ public class Notepad {
         initToolbar();
         initRightClickMenu();
         initAboutFrame();
-       
+    
     }
     
     Notepad(boolean init)
@@ -322,63 +329,63 @@ public class Notepad {
     void initSearchFrame()
     {
      
-        searchFrame.setAlwaysOnTop(true);
-        searchBtn.addActionListener(new FindBtnHandler());
-        replaceSearchBtn.addActionListener(new ReplaceBtnHandler());
-        replaceAllBtn.addActionListener(new ReplaceAllBtnHandler());
-        
-        GroupLayout layout = new javax.swing.GroupLayout(searchFrame.getContentPane());
-        searchFrame.getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(searchLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
-                    .addComponent(replaceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(replaceField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(findField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(searchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
-                    .addComponent(replaceSearchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(replaceAllBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cancelSearchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    
-                .addGap(23, 23, 23))
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(12, 12, 12)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(findField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchBtn)
-                    .addComponent(searchLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(replaceSearchBtn)
-                    .addComponent(replaceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(replaceLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(replaceAllBtn)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cancelSearchBtn)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
-
-        searchFrame.pack();
-   
-        
-       cancelSearchBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-               searchFrame.dispose();
-            }
-        });
-       
+//        searchFrame.setAlwaysOnTop(true);
+//        searchBtn.addActionListener(new FindBtnHandler());
+//        replaceSearchBtn.addActionListener(new ReplaceBtnHandler());
+//        replaceAllBtn.addActionListener(new ReplaceAllBtnHandler());
+//        
+//        GroupLayout layout = new javax.swing.GroupLayout(searchFrame.getContentPane());
+//        searchFrame.getContentPane().setLayout(layout);
+//        layout.setHorizontalGroup(
+//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+//                .addContainerGap()
+//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addComponent(searchLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+//                    .addComponent(replaceLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//                    .addComponent(replaceField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                    .addComponent(findField, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE))
+//                .addGap(26, 26, 26)
+//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+//                    .addComponent(searchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, 101, Short.MAX_VALUE)
+//                    .addComponent(replaceSearchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                    .addComponent(replaceAllBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+//                    .addComponent(cancelSearchBtn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+//                    
+//                .addGap(23, 23, 23))
+//        );
+//        layout.setVerticalGroup(
+//            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+//            .addGroup(layout.createSequentialGroup()
+//                .addGap(12, 12, 12)
+//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+//                    .addComponent(findField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                    .addComponent(searchBtn)
+//                    .addComponent(searchLabel))
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+//                    .addComponent(replaceSearchBtn)
+//                    .addComponent(replaceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+//                    .addComponent(replaceLabel))
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//                .addComponent(replaceAllBtn)
+//                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+//                .addComponent(cancelSearchBtn)
+//                .addContainerGap(15, Short.MAX_VALUE))
+//        );
+//
+//        searchFrame.pack();
+//   
+//        
+//       cancelSearchBtn.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent ae) {
+//               searchFrame.dispose();
+//            }
+//        });
+//       
        
         
     
@@ -538,44 +545,52 @@ public class Notepad {
         @Override
         public void actionPerformed(ActionEvent ae) {
            
-            initSearchFrame();
-          
-            searchFrame.setLocationRelativeTo(mainNotepadFrame);
-            searchFrame.setVisible(true);
-           
+            SearchAndReplace searchAndReplace = new SearchAndReplace(mainNotepadFrame);
+            searchAndReplace.searchBtn.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent ae) {
+                    if (searchAndReplace.findText(textArea.getText()))
+                    {
+                        textArea.select(searchAndReplace.selectionStart, searchAndReplace.selectionEnd);
+                            
+                    }
+                }
+            });
+
         }
     });
         menuEdit.add(selectAll);
-        
 
-        Settings settings = new Settings();
-        settings.addWindowListener(new WindowAdapter() {
-            public void windowClosed(WindowEvent we) 
-        {     
-            if (settings.isApplied)
-            {
-                textArea.setBackground(settings.colorBackground);
-                textArea.setForeground(settings.colorFont);
-            }
-           
-            
-        }
-});
-        
+       
         
         JMenu menuTools = menuBar.add(new JMenu(" Tools "));
-     
+        
+        /**
+         * Settings frame
+         * 
+         */
         JMenuItem menuItemSettings = menuTools.add("Settings");
         menuItemSettings.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-              settings.preview.setBackground(textArea.getBackground());
-              settings.preview.setForeground(textArea.getForeground());
-              settings.setVisible(true);
-              settings.preview.setFont(textArea.getFont());
-               
+             
+                Settings settings = new Settings(mainNotepadFrame);
+                
+                
+                settings.adapt(textArea.getFont(),textArea.getBackground(),textArea.getForeground());
+                settings.applyBtn.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent ae) {
+                        textArea.setBackground(settings.setBgColor());
+                        textArea.setForeground(settings.setFontColor());
+                    }
+                });
+              
             }
         });
+        
+        
+        
         JMenuItem menuItemDefault = menuTools.add("Default look");
         menuItemDefault.addActionListener(new ActionListener() {
             @Override
@@ -747,8 +762,8 @@ public class Notepad {
         
         editPanel.addSeparator();
         System.out.println(lineWrap.getFont().toString());
-        searchLabel.setFont(new Font("Dialog",Font.BOLD,12));
-        System.out.println(searchLabel.getFont().toString());
+      //  searchLabel.setFont(new Font("Dialog",Font.BOLD,12));
+      //  System.out.println(searchLabel.getFont().toString());
        
         JLabel searchLabelToolbar = new JLabel("Find: ");
         
@@ -759,7 +774,7 @@ public class Notepad {
           
 
         editPanel.add(searchBtnToolbar);
-        searchBtnToolbar.addActionListener(new FindBtnHandler());
+     //   searchBtnToolbar.addActionListener(new FindBtnHandler());
         editPanel.addSeparator();
         
         statusBar.setBorder(BorderFactory.createEtchedBorder());
@@ -1144,91 +1159,92 @@ public class Notepad {
             
         }
         
-      class FindBtnHandler implements ActionListener
-    {
-       private int selectionStart=0;
-       
-        @Override
-        public void actionPerformed(ActionEvent e) 
-        {
-            if(!searchFrame.isVisible())
-            {
-            
-                findField.setText(findFieldToolbar.getText());
-                
-            }
-           
-            String textToFind=findField.getText();
-            
-            selectionStart=textArea.getText().indexOf(textToFind, selectionStart+textToFind.length());
-            System.out.println(textArea.getText().indexOf(textToFind, selectionStart+textToFind.length()));
-            
-           if (selectionStart == -1)         
-               
-              selectionStart = textArea.getText().indexOf(textToFind);
-           
-           if (selectionStart >= 0)
-           { 
-                textArea.requestFocus();   
-                textArea.select(selectionStart,selectionStart+textToFind.length());          
-           }
-            
-        }
-
-    }
-    
-      
-      
-    class ReplaceBtnHandler implements ActionListener
-    {
-
-        @Override
-        public void actionPerformed(ActionEvent e)
-        {   searchFrame.requestFocus();
-            if(textArea.getSelectedText()!=null)
-            textArea.replaceSelection(replaceField.getText());
-        }
-       
-
-    }
-    
-    
-    class ReplaceAllBtnHandler implements ActionListener
-    {
-        
-        private int selectionStart=0;
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            String textToReplace=findField.getText();
-            String replacementText=replaceField.getText();
-            
-            if(!textToReplace.isEmpty())
-            {
-                    System.out.println("niepusty");
-                while(textArea.getText().contains(textToReplace))
-                {
-                    selectionStart=textArea.getText().indexOf(textToReplace, selectionStart+textToReplace.length());                 
-                    if(selectionStart==-1)
-                    {
-                        selectionStart=0;    
-                    }
-                    textArea.select(selectionStart,selectionStart+textToReplace.length());
-                    System.out.println(selectionStart);
-                    System.out.println(textArea.getSelectedText());
-                    textArea.replaceSelection(replacementText);
-                    textArea.select(0, 0);
-                }   
-            }
-        }
-       
-
-    }    
+//      class FindBtnHandler implements ActionListener
+//    {
+//       private int selectionStart=0;
+//       
+//        @Override
+//        public void actionPerformed(ActionEvent e) 
+//        {
+//            if(!searchFrame.isVisible())
+//            {
+//            
+//                findField.setText(findFieldToolbar.getText());
+//                
+//            }
+//           
+//            String textToFind=findField.getText();
+//            
+//            selectionStart=textArea.getText().indexOf(textToFind, selectionStart+textToFind.length());
+//            System.out.println(textArea.getText().indexOf(textToFind, selectionStart+textToFind.length()));
+//            
+//           if (selectionStart == -1)         
+//               
+//              selectionStart = textArea.getText().indexOf(textToFind);
+//           
+//           if (selectionStart >= 0)
+//           { 
+//                textArea.requestFocus();   
+//                textArea.select(selectionStart,selectionStart+textToFind.length());          
+//           }
+//            
+//        }
+//
+//    }
+//    
+//      
+//      
+//    class ReplaceBtnHandler implements ActionListener
+//    {
+//
+//        @Override
+//        public void actionPerformed(ActionEvent e)
+//        {   searchFrame.requestFocus();
+//            if(textArea.getSelectedText()!=null)
+//            textArea.replaceSelection(replaceField.getText());
+//        }
+//       
+//
+//    }
+//    
+//    
+//    class ReplaceAllBtnHandler implements ActionListener
+//    {
+//        
+//        private int selectionStart=0;
+//
+//        @Override
+//        public void actionPerformed(ActionEvent e) {
+//            String textToReplace=findField.getText();
+//            String replacementText=replaceField.getText();
+//            
+//            if(!textToReplace.isEmpty())
+//            {
+//                    System.out.println("niepusty");
+//                while(textArea.getText().contains(textToReplace))
+//                {
+//                    selectionStart=textArea.getText().indexOf(textToReplace, selectionStart+textToReplace.length());                 
+//                    if(selectionStart==-1)
+//                    {
+//                        selectionStart=0;    
+//                    }
+//                    textArea.select(selectionStart,selectionStart+textToReplace.length());
+//                    System.out.println(selectionStart);
+//                    System.out.println(textArea.getSelectedText());
+//                    textArea.replaceSelection(replacementText);
+//                    textArea.select(0, 0);
+//                }   
+//            }
+//        }
+//       
+//
+//    }    
         
   
     public static void main(String[] args) {
       
       Notepad notepad=new Notepad();
+      notepad.start();
       notepad.mainNotepadFrame.setVisible(true);
         
         System.out.println("ARGS "+args.length);

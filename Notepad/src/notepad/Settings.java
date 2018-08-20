@@ -19,14 +19,11 @@ import javax.swing.event.ChangeListener;
 public class Settings extends JFrame {
     
   
-    Color colorBackground = new Color(255,255,255);
-    Color colorFont = new Color(0,0,0);
-    Color tempBgColor = new Color(0,0,0);
-    Color tempFontColor = new Color(0,0,0);
-    JTextArea preview = new JTextArea(" This it preview text");
-    Boolean isApplied=false;
-    JButton applyBtn = new JButton("Apply Changes");
-    JButton cancelBtn = new JButton("    Cancel    ");
+   protected Color tempBgColor = new Color(0,0,0);
+   protected Color tempFontColor = new Color(0,0,0);
+   protected JTextArea preview = new JTextArea(" This it preview text");
+   protected JButton applyBtn = new JButton("Apply Changes");
+   protected JButton exitBtn = new JButton("    Exit    ");
     
     
     class Slider extends JSlider
@@ -41,23 +38,31 @@ public class Settings extends JFrame {
     
     }
     
-    Settings()
+    Settings(Component frame)
     {
-        Notepad notepad = new Notepad(false);
-        this.setBounds(300,300,320,360);
-        this.setVisible(false);
-        this.setTitle("Settings");
-        this.setResizable(false);      
+       
+       initComponents();
+       setVisible(true);
+       this.setLocationRelativeTo(frame);
+    }
+
+    
+    void initComponents()
+    {
+  
+        setBounds(300,300,320,360);
+        setVisible(false);
+        setTitle("Settings");
+        setResizable(false);      
         JPanel topRootPanel =new JPanel(new GridLayout(2,0));
         JPanel slidersPanel = new JPanel();
         
        
         
-        this.getContentPane().add(topRootPanel);
+       getContentPane().add(topRootPanel);
         
        
-        preview.setBorder(BorderFactory.createEtchedBorder());
-        preview.setFont(notepad.getActualFont());
+        preview.setBorder(BorderFactory.createEtchedBorder());  
         preview.setEditable(false);
         
         topRootPanel.add(slidersPanel);
@@ -178,11 +183,11 @@ public class Settings extends JFrame {
      
         
         buttonPanel.add(applyBtn);
-        buttonPanel.add(cancelBtn);
+        buttonPanel.add(exitBtn);
         
-        this.add(buttonPanel,BorderLayout.SOUTH);
+        add(buttonPanel,BorderLayout.SOUTH);
         
-     
+
         
         bgRedSlider.addChangeListener(new ChangeListener() {
             @Override
@@ -241,38 +246,37 @@ public class Settings extends JFrame {
             }
          });
     
+
         
-        
-        applyBtn.addActionListener(new ActionListener() {
+        exitBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent ae) {
-              isApplied=true;
-              colorBackground=tempBgColor;
-              colorFont=tempFontColor;
-              dispose(); 
-              
-            }
-        });
-        
-        cancelBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent ae) {
-               isApplied=false;
                dispose();
             }
         });
-        
+
     }
     
+   Color setBgColor()
+   {   
+            return tempBgColor;    
+   }
+   
+   Color setFontColor()
+   {   
+            return tempFontColor;
+   }
+   
+   
+    void adapt(Font actualFont, Color actualBackgroundColor, Color actualForeGroundFolor)
+    {
+        preview.setBackground(actualBackgroundColor);
+        preview.setForeground(actualForeGroundFolor);
+        preview.setFont(actualFont);
     
-    
-    
-    public static void main(String[] args) {
-       
-        new Settings().setVisible(true);
-        
     }
     
+ 
 }
  
 
